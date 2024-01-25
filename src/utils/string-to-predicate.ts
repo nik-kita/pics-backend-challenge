@@ -1,18 +1,18 @@
-export function stringToPredicate(str: string): Function | null {
+export function stringToPredicate(
+  str: string,
+): ((arg: unknown[]) => boolean) | null {
   try {
-    const fn = eval(str) as Function;
+    const fn = eval(str) as (arg: unknown) => unknown;
     Function.prototype.toString.call(fn);
 
     if (typeof fn([]) === "boolean") {
-      return fn;
+      return fn as (arg: unknown[]) => boolean;
     }
 
     throw new Error(
       "The function created from given string is not valid array-predicate",
     );
-  } catch (err) {
-    console.warn(err);
-
+  } catch (_) {
     return null;
   }
 }

@@ -16,7 +16,7 @@ describe("Check string as valid array-predicate function", () => {
 
       if (isValid) {
         expect(typeof fn).toBe("function");
-        expect(typeof (fn as Function)([])).toBe("boolean");
+        expect(typeof (fn as (arg: unknown) => boolean)([])).toBe("boolean");
       } else {
         expect(fn).toBeNull();
       }
