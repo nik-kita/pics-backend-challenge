@@ -1,4 +1,4 @@
-import { Event } from "./types";
+import { Event } from "../types";
 
 export function allStrategyAnalyzer(
   possibleDestinations: Event["possibleDestinations"],
