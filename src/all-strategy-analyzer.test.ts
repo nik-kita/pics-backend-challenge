@@ -19,7 +19,7 @@ describe("Analyze possible destinations with ALL strategy should work", () => {
         [{ a: true }, { b: true, a: true }, { a: false, b: false, c: true }],
         { a: false, b: false, c: true },
       ],
-    ],
+    ] as [Record<string, boolean>[], Record<string, boolean>][],
   )(
     "test-case №%#",
     (possibleDestinations, expected) => {

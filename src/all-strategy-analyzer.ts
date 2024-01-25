@@ -1,7 +1,7 @@
 import { Event } from "./types";
 
 export function allStrategyAnalyzer(
-  possibleDestinations: Partial<Event["possibleDestinations"][number]>[],
+  possibleDestinations: Event["possibleDestinations"],
 ) {
   return possibleDestinations.reduce((acc, variant) => {
     for (const [k, v] of Object.entries(variant)) {
