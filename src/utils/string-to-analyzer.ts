@@ -1,4 +1,5 @@
 import { Analyzer } from "../types";
+import { z } from "zod";
 
 export function stringToAnalyzer(
   str: string,
@@ -6,14 +7,8 @@ export function stringToAnalyzer(
   try {
     const fn = eval(str) as Analyzer;
     Function.prototype.toString.call(fn);
-
-    if (Object.values(fn([])).every((v) => typeof v === "boolean")) {
-      return fn as Analyzer;
-    }
-
-    throw new Error(
-      "The function created from given string is not valid array-predicate",
-    );
+    z.record(z.string(), z.boolean()).parse(fn([]));
+    return fn as Analyzer;
   } catch (_) {
     return null;
   }

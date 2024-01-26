@@ -5,10 +5,7 @@ import { stringToAnalyzer } from "../utils/string-to-analyzer";
 
 export function transformStrategyToAnalyzer(
   strategy: string,
-): { success: false } | {
-  success: true;
-  analyzer: Analyzer;
-} {
+) {
   if (strategy === "ALL" satisfies Strategy) {
     return {
       success: true,
@@ -28,5 +25,9 @@ export function transformStrategyToAnalyzer(
       success: true,
       analyzer,
     } as const
-    : { success: false } as const;
+    : {
+      success: false,
+      reason:
+        "Custom strategy should be correct js function: (...args: unknown[]) => Record<string, boolean>",
+    } as const;
 }

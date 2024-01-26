@@ -31,9 +31,10 @@ export default express()
     return next(new Error("Not found"));
   })
   .use(
-    ((err, _req, res, _next) => {
+    ((error, _req, res, _next) => {
+      console.warn(error);
       return res.status(400).json({
-        error: String(err),
+        error: error.message ?? error,
       });
     }) as ErrorRequestHandler,
   );

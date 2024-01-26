@@ -6,25 +6,23 @@ import { transformStrategyToAnalyzer } from "../validation/transform-strategy-to
 export const validateAndTransformEvent: (
   analyzer: Analyzer,
 ) => RequestHandler = (analyzer) => (req, _, next) => {
-  try {
-    const body: Event<boolean> = EventDto.parse(req.body);
+  const body: Event<boolean> = EventDto.parse(req.body);
 
-    if (body.strategy) {
-      const transformation = transformStrategyToAnalyzer(
-        body.strategy as string,
-      );
+  if (body.strategy) {
+    const transformation = transformStrategyToAnalyzer(
+      body.strategy as string,
+    );
 
-      if (transformation.success) {
-        (body as Event<true>).strategy = transformation.analyzer;
-      }
+    if (transformation.success) {
+      (body as Event<true>).strategy = transformation.analyzer;
     } else {
-      body.strategy = analyzer;
+      return next(new Error(transformation.reason));
     }
-
-    req.body = body;
-
-    next();
-  } catch (err) {
-    return next(err);
+  } else {
+    body.strategy = analyzer;
   }
+
+  req.body = body;
+
+  return next();
 };
