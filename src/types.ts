@@ -2,9 +2,9 @@ export type Transport = TransportTypeMap[keyof TransportTypeMap];
 export type Event = {
   payload: unknown;
   possibleDestinations: Record<string, boolean>[];
-  strategy?: Strategy;
+  strategy?: Strategy | string;
 };
-export type Strategy = "ALL" | "ANY" | string;
+export type Strategy = "ALL" | "ANY";
 export type Destination = {
   name: string;
 } & Transport;
