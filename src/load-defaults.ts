@@ -1,8 +1,11 @@
 import { Destination } from "./types";
 import { transformStrategyToAnalyzer } from "./validation/transform-strategy-to-analyzer";
+import { config } from "dotenv";
 
-// TODO
-export function loadDefaults() {
+export async function loadDefaults() {
+  await config();
+  console.log(process.env.PATH_TO_DEFAULT_CONFIGURATION);
+
   const analyzer_transformation = transformStrategyToAnalyzer(
     process.env.DEFAULT_ANALYZER_STRATEGY || "ALL",
   );

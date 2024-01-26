@@ -1,5 +1,46 @@
-import app from "./app";
+import express, { ErrorRequestHandler } from "express";
+import { loadDefaults } from "./load-defaults";
+import { validateAndTransformEvent } from "./middleware/validate-and-transform-event";
+import { Event } from "./types";
 
-app.listen(3000, () => {
-  console.info("http://localhost:3000");
-});
+async function main() {
+  const { analyzer, available_destinations } = await loadDefaults();
+  const availableDestinationNames = available_destinations.map(({ name }) =>
+    name
+  );
+
+  express()
+    .use(express.json())
+    .post("/", validateAndTransformEvent(analyzer), (req, res) => {
+      const { payload, possibleDestinations, strategy } = req.body as Required<
+        Event<true>
+      >;
+
+      // TODO ===
+      const result = strategy(possibleDestinations.map((d) => {
+        for (const k of Object.keys(d)) {
+          if (!availableDestinationNames.includes(k)) d[k] = false;
+        }
+
+        return d;
+      }));
+      // ========
+
+      return res.json(result);
+    })
+    .all("*", (_req, _res, next) => {
+      return next(new Error("Not found"));
+    })
+    .use(
+      ((error, _req, res, _next) => {
+        console.warn(error);
+        return res.status(400).json({
+          error: error.message ?? error,
+        });
+      }) as ErrorRequestHandler,
+    ).listen(3000, () => {
+      console.info("http://localhost:3000");
+    });
+}
+
+main();
