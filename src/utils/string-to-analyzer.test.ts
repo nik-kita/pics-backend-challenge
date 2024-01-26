@@ -1,3 +1,4 @@
+import { Analyzer } from "../types";
 import { stringToAnalyzer } from "./string-to-analyzer";
 
 describe("Check string as valid array-predicate function", () => {
@@ -19,7 +20,7 @@ describe("Check string as valid array-predicate function", () => {
 
       if (isValid) {
         expect(typeof fn).toBe("function");
-        const result = fn as (arg: unknown) => Record<string, boolean>;
+        const result = fn as Analyzer;
         expect(Object.values(result([])).every((v) => typeof v === "boolean"))
           .toBe(true);
       } else {

@@ -1,23 +1,23 @@
 import { allStrategyAnalyzer } from "../core/all-strategy-analyzer";
 import { anyStrategyAnalyzer } from "../core/any-strategy-analyzer";
-import { Event, Strategy } from "../types";
+import { Analyzer, Strategy } from "../types";
 import { stringToAnalyzer } from "../utils/string-to-analyzer";
 
 export function transformStrategyToAnalyzer(
   strategy: string,
 ): { success: false } | {
   success: true;
-  analyzer: (arg: Event["possibleDestinations"]) => unknown;
+  analyzer: Analyzer;
 } {
   if (strategy === "ALL" satisfies Strategy) {
     return {
       success: true,
-      analyzer: allStrategyAnalyzer,
+      analyzer: allStrategyAnalyzer as Analyzer,
     } as const;
   } else if (strategy === "ANY" satisfies Strategy) {
     return {
       success: true,
-      analyzer: anyStrategyAnalyzer,
+      analyzer: anyStrategyAnalyzer as Analyzer,
     } as const;
   }
 

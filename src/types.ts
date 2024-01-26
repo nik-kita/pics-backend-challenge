@@ -1,8 +1,10 @@
 export type Transport = TransportTypeMap[keyof TransportTypeMap];
-export type Event = {
+export type Analyzer = (args: unknown[]) => Record<string, boolean>;
+export type Event<T = false> = {
   payload: unknown;
   possibleDestinations: Record<string, boolean>[];
-  strategy?: Strategy | string;
+  strategy?: T extends false ? (Strategy | string)
+    : Analyzer;
 };
 export type Strategy = "ALL" | "ANY";
 export type Destination = {
