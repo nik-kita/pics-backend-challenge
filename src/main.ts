@@ -1,5 +1,5 @@
-function main() {
-  console.log("hi");
-}
+import app from "./app";
 
-main();
+app.listen(3000, () => {
+  console.info("http://localhost:3000");
+});
