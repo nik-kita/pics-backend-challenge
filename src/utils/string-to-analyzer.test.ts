@@ -2,8 +2,9 @@ import { stringToAnalyzer } from "./string-to-analyzer";
 
 describe("Check string as valid array-predicate function", () => {
   it.each([
-    ["console.log", "is not"],
+    ["console.debug", "is not"],
     ["() => {}", "is"],
+    ["() => ({ ok: true });", "is"],
     ["{}", "is not"],
     ["", "is not"],
     ["() => { return false; }", "is not"],
@@ -18,8 +19,9 @@ describe("Check string as valid array-predicate function", () => {
 
       if (isValid) {
         expect(typeof fn).toBe("function");
-        const result = (fn as (arg: unknown) => Record<string, boolean>);
-        expect(Object.values(result([])).every((v) => typeof v === 'boolean')).toBe(true);
+        const result = fn as (arg: unknown) => Record<string, boolean>;
+        expect(Object.values(result([])).every((v) => typeof v === "boolean"))
+          .toBe(true);
       } else {
         expect(fn).toBeNull();
       }

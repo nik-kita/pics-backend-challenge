@@ -6,7 +6,7 @@ import { transformStrategyToAnalyzer } from "./transform-strategy-to-analyzer";
 describe('Check "transformStrategyToAnalyzer" function', () => {
   it.each(
     [
-      ["console.log", "CUSTOM"],
+      ["() => ({ ok: true });", "CUSTOM"],
       ["ALL", "ALL"],
       ["ANY", "ANY"],
     ] satisfies [string, (Strategy | "CUSTOM")][],
@@ -19,8 +19,7 @@ describe('Check "transformStrategyToAnalyzer" function', () => {
       } else {
         expect(typeof result.analyzer).toBe("function");
         if (analyzerType === "ALL") {
-          console.log(result.analyzer.name);
-          expect(result.analyzer?.name).toBe(allStrategyAnalyzer.name);
+          expect(result.analyzer.name).toBe(allStrategyAnalyzer.name);
         } else if (analyzerType === "ANY") {
           expect(result.analyzer.name).toBe(anyStrategyAnalyzer.name);
         }

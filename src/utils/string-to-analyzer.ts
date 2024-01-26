@@ -2,10 +2,10 @@ export function stringToAnalyzer(
   str: string,
 ): ((arg: unknown[]) => Record<string, boolean>) | null {
   try {
-    const fn = eval(str) as (arg: unknown) => unknown;
+    const fn = eval(str) as (arg: unknown[]) => Record<string, boolean>;
     Function.prototype.toString.call(fn);
 
-    if (typeof fn([]) === "boolean") {
+    if (Object.values(fn([])).every((v) => typeof v === "boolean")) {
       return fn as (arg: unknown[]) => Record<string, boolean>;
     }
 
