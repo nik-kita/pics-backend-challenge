@@ -1,7 +1,7 @@
 import { allStrategyAnalyzer } from "../core/all-strategy-analyzer";
 import { anyStrategyAnalyzer } from "../core/any-strategy-analyzer";
-import { Destination, Event, Strategy } from "../types";
-import { stringToPredicate } from "../utils/string-to-predicate";
+import { Event, Strategy } from "../types";
+import { stringToAnalyzer } from "../utils/string-to-analyzer";
 
 export function transformStrategyToAnalyzer(
   strategy: string,
@@ -21,7 +21,7 @@ export function transformStrategyToAnalyzer(
     } as const;
   }
 
-  const analyzer = stringToPredicate(strategy);
+  const analyzer = stringToAnalyzer(strategy);
 
   return analyzer
     ? {

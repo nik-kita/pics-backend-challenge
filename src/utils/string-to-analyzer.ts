@@ -1,4 +1,4 @@
-export function stringToPredicate(
+export function stringToAnalyzer(
   str: string,
 ): ((arg: unknown[]) => boolean) | null {
   try {

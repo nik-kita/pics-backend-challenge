@@ -1,4 +1,4 @@
-import { stringToPredicate } from "./string-to-predicate";
+import { stringToAnalyzer } from "./string-to-analyzer";
 
 describe("Check string as valid array-predicate function", () => {
   it.each([
@@ -12,7 +12,7 @@ describe("Check string as valid array-predicate function", () => {
     "eval('%s') %s of type () => boolean",
     ([str, _isValid]) => {
       const isValid = _isValid === "is";
-      const fn = stringToPredicate(str);
+      const fn = stringToAnalyzer(str);
 
       if (isValid) {
         expect(typeof fn).toBe("function");
