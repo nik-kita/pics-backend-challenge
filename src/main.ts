@@ -16,7 +16,7 @@ async function main() {
         Event<true>
       >;
 
-      // TODO ===
+      // TODO move filtering unknown destinations into separate function
       const result = strategy(possibleDestinations.map((d) => {
         for (const k of Object.keys(d)) {
           if (!availableDestinationNames.includes(k)) d[k] = false;
@@ -24,7 +24,6 @@ async function main() {
 
         return d;
       }));
-      // ========
 
       return res.json(result);
     })
@@ -38,7 +37,8 @@ async function main() {
           error: error.message ?? error,
         });
       }) as ErrorRequestHandler,
-    ).listen(3000, () => {
+    )
+    .listen(3000, () => {
       console.info("http://localhost:3000");
     });
 }
