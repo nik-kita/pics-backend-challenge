@@ -8,12 +8,12 @@ export function transformStrategyToAnalyzer(strategy: string) {
     return {
       success: true,
       analyzer: allStrategyAnalyzer,
-    };
+    } as const;
   } else if (strategy === "ANY" satisfies Strategy) {
     return {
       success: true,
       analyzer: anyStrategyAnalyzer,
-    };
+    } as const;
   }
 
   const analyzer = stringToPredicate(strategy);
@@ -22,6 +22,6 @@ export function transformStrategyToAnalyzer(strategy: string) {
     ? {
       success: true,
       analyzer,
-    }
-    : { success: false };
+    } as const
+    : { success: false } as const;
 }
