@@ -1,5 +1,7 @@
 export type Transport = TransportTypeMap[keyof TransportTypeMap];
-export type Analyzer = (args: unknown[]) => Record<string, boolean>;
+export type Analyzer =
+  | ((args: unknown[]) => Record<string, boolean>)
+  | ((args: Record<string, boolean>[]) => Record<string, boolean>);
 export type Event<T = false> = {
   payload: unknown;
   possibleDestinations: Record<string, boolean>[];

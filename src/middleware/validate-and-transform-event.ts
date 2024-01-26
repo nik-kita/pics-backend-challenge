@@ -20,6 +20,10 @@ export const validateAndTransformEvent: (
     } else {
       body.strategy = analyzer;
     }
+
+    req.body = body;
+
+    next();
   } catch (err) {
     return next(err);
   }

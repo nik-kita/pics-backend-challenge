@@ -12,12 +12,12 @@ export function transformStrategyToAnalyzer(
   if (strategy === "ALL" satisfies Strategy) {
     return {
       success: true,
-      analyzer: allStrategyAnalyzer as Analyzer,
+      analyzer: allStrategyAnalyzer,
     } as const;
   } else if (strategy === "ANY" satisfies Strategy) {
     return {
       success: true,
-      analyzer: anyStrategyAnalyzer as Analyzer,
+      analyzer: anyStrategyAnalyzer,
     } as const;
   }
 
