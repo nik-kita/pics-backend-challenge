@@ -1,12 +1,12 @@
 export function stringToAnalyzer(
   str: string,
-): ((arg: unknown[]) => boolean) | null {
+): ((arg: unknown[]) => Record<string, boolean>) | null {
   try {
     const fn = eval(str) as (arg: unknown) => unknown;
     Function.prototype.toString.call(fn);
 
     if (typeof fn([]) === "boolean") {
-      return fn as (arg: unknown[]) => boolean;
+      return fn as (arg: unknown[]) => Record<string, boolean>;
     }
 
     throw new Error(
