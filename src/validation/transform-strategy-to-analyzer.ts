@@ -1,9 +1,14 @@
 import { allStrategyAnalyzer } from "../core/all-strategy-analyzer";
 import { anyStrategyAnalyzer } from "../core/any-strategy-analyzer";
-import { Strategy } from "../types";
+import { Destination, Event, Strategy } from "../types";
 import { stringToPredicate } from "../utils/string-to-predicate";
 
-export function transformStrategyToAnalyzer(strategy: string) {
+export function transformStrategyToAnalyzer(
+  strategy: string,
+): { success: false } | {
+  success: true;
+  analyzer: (arg: Event["possibleDestinations"]) => unknown;
+} {
   if (strategy === "ALL" satisfies Strategy) {
     return {
       success: true,
