@@ -2,6 +2,7 @@ import { config } from "dotenv";
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { Destination, Strategy } from "./types";
+import { EventDto } from "./validation/event.dto";
 import { transformStrategyToAnalyzer } from "./validation/transform-strategy-to-analyzer";
 
 export async function loadDefaults() {
@@ -20,7 +21,7 @@ export async function loadDefaults() {
       { encoding: "utf-8" },
     );
     const { analyzer, available_destinations } = JSON.parse(data);
-    // TODO add validation
+    EventDto.pick({ possibleDestinations: true }).parse(available_destinations);
     Object.assign(configuration, { analyzer, available_destinations });
   } catch (error) {
     throw new Error(`
