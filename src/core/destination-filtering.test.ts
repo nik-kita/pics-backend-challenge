@@ -1,6 +1,5 @@
-import { Destination } from "../types";
-import { destinationsFiltering } from './destination-filtering';
-
+import { Destination, Event } from "../types";
+import { destinationsFiltering } from "./destination-filtering";
 
 describe("Check destinationFiltering function", () => {
   it.each(
@@ -8,56 +7,62 @@ describe("Check destinationFiltering function", () => {
       {
         available: new Map(([
           {
-            name: 'first',
-            transport: 'console.log',
+            name: "first",
+            transport: "console.log",
           },
           {
-            name: 'second',
-            transport: 'http.get',
-            url: 'http://localhost:3000',
+            name: "second",
+            transport: "http.get",
+            url: "http://localhost:3000",
           },
         ] as Destination[]).map((d) => [d.name, d])),
-        expected: [],
+        expected: [
+          {
+            unexpected: false,
+            transport: false,
+          },
+        ],
         from_client: [
           {
-            name: 'unexpected',
-            transport: 'console.log',
+            unexpected: true,
+            transport: false,
           },
         ],
       },
       {
         available: new Map(([
           {
-            name: 'first',
-            transport: 'console.log',
+            name: "first",
+            transport: "console.log",
           },
           {
-            name: 'second',
-            transport: 'http.get',
-            url: 'http://localhost:3000',
+            name: "second",
+            transport: "http.get",
+            url: "http://localhost:3000",
           },
         ] as Destination[]).map((d) => [d.name, d])),
         expected: [
           {
-            name: 'first',
-            transport: 'console.log',
+            unexpected: false,
+          },
+          {
+            first: true,
           },
         ],
+
         from_client: [
           {
-            name: 'unexpected',
-            transport: 'console.log',
+            unexpected: true,
           },
           {
-            name: 'first',
-            transport: 'console.log',
+            first: true,
           },
         ],
-      }
-    ] satisfies {
-      from_client: Destination[];
+      },
+    ] as {
+      from_client: Event["possibleDestinations"];
       available: Map<string, Destination>;
-      expected: Destination[];
+      expected: Event["possibleDestinations"];
     }[],
   )("%# test-case", ({ available, expected, from_client }) => {
     expect(destinationsFiltering({ from_client, available })).toEqual(expected);

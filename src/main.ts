@@ -1,13 +1,11 @@
 import express, { ErrorRequestHandler } from "express";
+import { destinationsFiltering } from "./core/destination-filtering";
 import { loadDefaults } from "./load-defaults";
 import { validateAndTransformEvent } from "./middleware/validate-and-transform-event";
 import { Event } from "./types";
 
 async function main() {
   const { analyzer, available_destinations } = await loadDefaults();
-  const availableDestinationNames = available_destinations.map(({ name }) =>
-    name
-  );
 
   express()
     .use(express.json())
@@ -17,13 +15,10 @@ async function main() {
       >;
 
       // TODO move filtering unknown destinations into separate function
-      const result = strategy(possibleDestinations.map((d) => {
-        for (const k of Object.keys(d)) {
-          if (!availableDestinationNames.includes(k)) d[k] = false;
-        }
-
-        return d;
-      }));
+      const result = destinationsFiltering({
+        available: available_destinations,
+        from_client: possibleDestinations,
+      });
 
       return res.json(result);
     })

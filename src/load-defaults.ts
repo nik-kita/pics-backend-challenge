@@ -41,6 +41,8 @@ Fail to load configuration from "${pathToDefaultConfiguration}"!
 
   return {
     analyzer: analyzer_transformation.analyzer,
-    available_destinations: configuration.available_destinations,
+    available_destinations: new Map(
+      configuration.available_destinations.map((d) => [d.name, d]),
+    ),
   };
 }
