@@ -45,5 +45,6 @@ Fail to load configuration from "${pathToDefaultConfiguration}"!
     available_destinations: new Map(
       configuration.available_destinations.map((d) => [d.name, d]),
     ),
+    port: +(process.env.PORT ?? 3000),
   };
 }

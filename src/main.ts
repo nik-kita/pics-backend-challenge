@@ -2,12 +2,12 @@ import express from "express";
 import { allErrorHandler } from "./common/all-error-handler";
 import { notFoundHandler } from "./common/not-found-handler";
 import { destinationsFiltering } from "./core/destination-filtering";
-import { loadDefaults } from "./load-defaults";
+import { loadDefaults as loadConfiguration } from "./load-configuration";
 import { validateAndTransformEvent } from "./middleware/validate-and-transform-event";
 import { Event } from "./types";
 
 async function main() {
-  const { analyzer, available_destinations } = await loadDefaults();
+  const { analyzer, available_destinations, port } = await loadConfiguration();
 
   express()
     .use(express.json())
@@ -24,8 +24,8 @@ async function main() {
     })
     .all("*", notFoundHandler)
     .use(allErrorHandler)
-    .listen(3000, () => {
-      console.info("http://localhost:3000");
+    .listen(port, () => {
+      console.info("Server is successfully running");
     });
 }
 
