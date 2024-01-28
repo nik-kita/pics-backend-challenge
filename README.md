@@ -29,3 +29,8 @@
     1. First app will try to read configuration by path in this variable and
        will throw exception if file is not exists
     2. If this variable is empty - `default-configuration.json` will be read
+
+# // TODO
+- log into MongoDb
+- jwt authentication
+- transport payload
