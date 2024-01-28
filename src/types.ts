@@ -13,7 +13,7 @@ export type Destination = {
   name: string;
 } & Transport;
 
-type TransportTypeMap = {
+export type TransportTypeMap = {
   http: {
     transport: `http.${"get" | "post" | "put"}`;
     url: string;

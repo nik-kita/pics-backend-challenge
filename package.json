@@ -6,7 +6,12 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/main.js",
-    "test": "npx jest --verbose"
+    "test": "npx jest --verbose",
+    "docker:build": "docker build -t pics-backend-challenge-image .",
+    "docker:run": "docker run -dp 3000:3000 --name pics-backend-challenge pics-backend-challenge-image",
+    "docker:start": "docker start pics-backend-challenge",
+    "docker:stop": "docker stop pics-backend-challenge",
+    "docker:rm": "docker rm pics-backend-challenge"
   },
   "keywords": [],
   "author": "",

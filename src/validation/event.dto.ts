@@ -1,7 +1,7 @@
 import { Event } from "../types";
 import { z } from "zod";
 
-export const EventDto: z.ZodType<Event> = z.object(
+export const EventDto = z.object(
   {
     possibleDestinations: z.array(
       z.record(z.string(), z.boolean()).and(
@@ -15,4 +15,4 @@ export const EventDto: z.ZodType<Event> = z.object(
     }),
     strategy: z.string().optional(),
   } satisfies Record<keyof Event, unknown>,
-).strict();
+).strict() satisfies z.ZodType<Event>;

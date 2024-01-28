@@ -1,45 +1,31 @@
-import express, { ErrorRequestHandler } from "express";
-import { loadDefaults } from "./load-defaults";
+import express from "express";
+import { allErrorHandler } from "./common/all-error-handler";
+import { notFoundHandler } from "./common/not-found-handler";
+import { destinationsFiltering } from "./core/destination-filtering";
+import { loadDefaults as loadConfiguration } from "./load-configuration";
 import { validateAndTransformEvent } from "./middleware/validate-and-transform-event";
 import { Event } from "./types";
 
 async function main() {
-  const { analyzer, available_destinations } = await loadDefaults();
-  const availableDestinationNames = available_destinations.map(({ name }) =>
-    name
-  );
+  const { analyzer, available_destinations, port } = await loadConfiguration();
 
   express()
     .use(express.json())
     .post("/", validateAndTransformEvent(analyzer), (req, res) => {
-      const { payload, possibleDestinations, strategy } = req.body as Required<
+      const { payload, possibleDestinations } = req.body as Required<
         Event<true>
       >;
-
-      // TODO move filtering unknown destinations into separate function
-      const result = strategy(possibleDestinations.map((d) => {
-        for (const k of Object.keys(d)) {
-          if (!availableDestinationNames.includes(k)) d[k] = false;
-        }
-
-        return d;
-      }));
+      const result = destinationsFiltering({
+        available: available_destinations,
+        from_client: possibleDestinations,
+      });
 
       return res.json(result);
     })
-    .all("*", (_req, _res, next) => {
-      return next(new Error("Not found"));
-    })
-    .use(
-      ((error, _req, res, _next) => {
-        console.warn(error);
-        return res.status(400).json({
-          error: error.message ?? error,
-        });
-      }) as ErrorRequestHandler,
-    )
-    .listen(3000, () => {
-      console.info("http://localhost:3000");
+    .all("*", notFoundHandler)
+    .use(allErrorHandler)
+    .listen(port, () => {
+      console.info("Server is successfully running!");
     });
 }
 
