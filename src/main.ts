@@ -25,7 +25,7 @@ async function main() {
     .all("*", notFoundHandler)
     .use(allErrorHandler)
     .listen(port, () => {
-      console.info("Server is successfully running");
+      console.info("Server is successfully running!");
     });
 }
 

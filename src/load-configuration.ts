@@ -2,7 +2,7 @@ import { config } from "dotenv";
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { Destination, Strategy } from "./types";
-import { EventDto } from "./validation/event.dto";
+import { DestinationDto } from "./validation/destinations.dto";
 import { transformStrategyToAnalyzer } from "./validation/transform-strategy-to-analyzer";
 
 export async function loadDefaults() {
@@ -21,10 +21,13 @@ export async function loadDefaults() {
       { encoding: "utf-8" },
     );
     const { analyzer, available_destinations } = JSON.parse(data);
-    EventDto.pick({ possibleDestinations: true }).parse(available_destinations);
+    DestinationDto.parse(available_destinations);
     Object.assign(configuration, { analyzer, available_destinations });
   } catch (error) {
     throw new Error(`
+Raw error:
+${error}
+=============================================================================
 Fail to load configuration from "${pathToDefaultConfiguration}"!
     1). Create json file with configuration (see "default-configuration.json" as example)
     2). Create .env
